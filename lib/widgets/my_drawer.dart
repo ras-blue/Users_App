@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:users_app/CustomersAuthScreens/customer_auth_screen.dart';
 import 'package:users_app/global/global.dart';
+import 'package:users_app/mainScreens/home_screen.dart';
+import 'package:users_app/ordersScreens/orders_screen.dart';
 // import 'package:users_app/splashScreen/my_splash_screen.dart';
 import 'package:users_app/welcome_screens/welcome_register_screen.dart';
 
@@ -77,7 +79,10 @@ class _MyDrawerState extends State<MyDrawer> {
                       color: Colors.grey,
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => HomeScreen()));
+                  },
                 ),
                 Divider(
                   height: 10,
@@ -92,12 +97,15 @@ class _MyDrawerState extends State<MyDrawer> {
                     color: Colors.grey,
                   ),
                   title: Text(
-                    'orders',
+                    'My Orders',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => OrdersScreen()));
+                  },
                 ),
                 Divider(
                   height: 10,

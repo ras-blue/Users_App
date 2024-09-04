@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:users_app/CartScreens/cart_item_design_widget.dart';
+import 'package:users_app/addressScreens/address_screen.dart';
+import 'package:users_app/assistantMethods/cart_item_counter.dart';
+import 'package:users_app/assistantMethods/total_amount.dart';
 import 'package:users_app/global/global.dart';
 import 'package:users_app/models/items.dart';
 import 'package:users_app/splashScreen/my_splash_screen.dart';
@@ -20,10 +24,15 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   List<int>? itemQuantityList;
+  double totalAmount = 0.0;
 
   @override
   void initState() {
     super.initState();
+
+    totalAmount = 0;
+    Provider.of<TotalAmount>(context, listen: false)
+        .showTotalAmountOfCartItems(0);
 
     itemQuantityList = cartMethods.seperateItemQuantitiesFromUserCartList();
   }
@@ -31,6 +40,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppbarCartBadge(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -61,7 +71,17 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           FloatingActionButton.extended(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (c) => AddressScreen(
+                    vendorUID: widget.vendorUID.toString(),
+                    totalAmount: totalAmount.toDouble(),
+                  ),
+                ),
+              );
+            },
             heroTag: 'btn2',
             icon: Icon(
               Icons.navigate_next,
@@ -80,9 +100,25 @@ class _CartScreenState extends State<CartScreen> {
           SliverToBoxAdapter(
             child: Container(
               color: Colors.black45,
-              child: Text(
-                'Total Price: ' + '240',
-              ),
+              child: Consumer2<TotalAmount, CartItemCounter>(
+                  builder: (context, amountProvider, cartProvider, c) {
+                return Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Center(
+                    child: cartProvider.count == 0
+                        ? Container()
+                        : Text(
+                            "Total Price:" + amountProvider.tAmount.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
+                          ),
+                  ),
+                );
+              }),
             ),
           ),
           // query
@@ -103,9 +139,30 @@ class _CartScreenState extends State<CartScreen> {
                     (context, index) {
                       Items model = Items.fromJson(dataSnapshot.data.docs[index]
                           .data() as Map<String, dynamic>);
-                      return CartItemDesignWidget(
-                        model: model,
-                        quantityNumber: itemQuantityList![index],
+
+                      if (index == 0) {
+                        totalAmount = 0;
+                        totalAmount = (double.parse(model.price!) *
+                            itemQuantityList![index]);
+                      } else {
+                        totalAmount = (double.parse(model.price!) *
+                            itemQuantityList![index]);
+                      }
+
+                      if (dataSnapshot.data.docs.length - 1 == index) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          Provider.of<TotalAmount>(context, listen: false)
+                              .showTotalAmountOfCartItems(totalAmount);
+                        });
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CartItemDesignWidget(
+                          model: model,
+                          quantityNumber: itemQuantityList![index],
+                        ),
                       );
                     },
                     childCount: dataSnapshot.data.docs.length,

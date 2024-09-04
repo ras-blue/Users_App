@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:users_app/CartScreens/cart_screen.dart';
 import 'package:users_app/assistantMethods/cart_item_counter.dart';
@@ -57,14 +58,20 @@ class _AppbarCartBadgeState extends State<AppbarCartBadge> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (c) => CartScreen(
-                      vendorUID: widget.vendorUID,
+                int itemsInCart =
+                    Provider.of<CartItemCounter>(context, listen: false).count;
+                if (itemsInCart == 0) {
+                  Fluttertoast.showToast(msg: "Cart is empty.");
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (c) => CartScreen(
+                        vendorUID: widget.vendorUID,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
               icon: Icon(
                 Icons.shopping_cart,

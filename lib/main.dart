@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:users_app/assistantMethods/address_changer.dart';
 import 'package:users_app/assistantMethods/cart_item_counter.dart';
+import 'package:users_app/assistantMethods/total_amount.dart';
 import 'package:users_app/global/global.dart';
 // import 'package:users_app/authScreens/auth_screen.dart';
 // import 'package:users_app/splashScreen/my_splash_screen.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (c) => CartItemCounter()),
+        ChangeNotifierProvider(create: (c) => TotalAmount()),
+        ChangeNotifierProvider(create: (c) => AddressChanger()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

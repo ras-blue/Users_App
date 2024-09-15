@@ -5,8 +5,9 @@ import 'package:users_app/brandsScreens/brands_ui_design_widget.dart';
 import 'package:users_app/brandsScreens/upload_brands_screen.dart';
 import 'package:users_app/global/global.dart';
 import 'package:users_app/models/brands.dart';
-import 'package:users_app/widgets/my_drawer.dart';
+// import 'package:users_app/widgets/my_drawer.dart';
 import 'package:users_app/widgets/text_delegate_header_widget.dart';
+import 'package:users_app/widgets/vendor_drawer.dart';
 
 class VendorHomeScreen extends StatefulWidget {
   const VendorHomeScreen({super.key});
@@ -16,10 +17,27 @@ class VendorHomeScreen extends StatefulWidget {
 }
 
 class _VendorHomeScreenState extends State<VendorHomeScreen> {
+  getSellerEarningsFromDataBase() {
+    FirebaseFirestore.instance
+        .collection('vendor')
+        .doc(sharedPreferences!.getString('uid'))
+        .get()
+        .then((dataSnapShot) {
+      previousEarning = dataSnapShot.data()!['earnings'].toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getSellerEarningsFromDataBase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: MyDrawer(),
+        drawer: VendorDrawer(),
         appBar: AppBar(
           flexibleSpace: Container(
             decoration: BoxDecoration(

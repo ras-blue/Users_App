@@ -28,6 +28,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
       "orderTime": orderId,
       "orderId": orderId,
       "isSuccess": true,
+      "vendorUID": widget.vendorUID,
       "status": "normal",
     }).whenComplete(() {
       saveOrderDetailsForVendor({
@@ -39,6 +40,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
         "orderTime": orderId,
         "orderId": orderId,
         "isSuccess": true,
+        "vendorUID": widget.vendorUID,
         "status": "normal",
       }).whenComplete(() {
         cartMethods.ClearCart(context);

@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:users_app/VendorOrderScreens/vendor_order_card.dart';
 import 'package:users_app/global/global.dart';
-import 'package:users_app/ordersScreens/order_card.dart';
 
-class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
-
+class ShiftedParcelsScreen extends StatefulWidget {
   @override
-  State<OrdersScreen> createState() => _OrdersScreenState();
+  State<ShiftedParcelsScreen> createState() => _ShiftedParcelsScreenState();
 }
 
-class _OrdersScreenState extends State<OrdersScreen> {
+class _ShiftedParcelsScreenState extends State<ShiftedParcelsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +32,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
         ),
         title: Text(
-          'My Orders',
+          'Shifted Parcels Screen',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -46,10 +44,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("users")
-            .doc(sharedPreferences!.getString("uid"))
             .collection("orders")
-            .where("status", isEqualTo: "normal")
+            .where("status", isEqualTo: "shifted")
+            .where('vendorUID', isEqualTo: sharedPreferences!.getString('uid'))
             .orderBy("orderTime", descending: true)
             .snapshots(),
         builder: (c, AsyncSnapshot dataSnapShot) {
@@ -64,14 +61,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           whereIn: cartMethods.seperateOrderItemIDs(
                               (dataSnapShot.data.docs[index].data()
                                   as Map<String, dynamic>)["productIDs"]))
-                      .where("orderBy",
+                      .where("vendorUID",
                           whereIn: (dataSnapShot.data.docs[index].data()
                               as Map<String, dynamic>)["uid"])
                       .orderBy("publishedDate", descending: true)
                       .get(),
                   builder: (c, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      return OrderCard(
+                      return VendorOrderCard(
                         itemCount: snapshot.data.docs.length,
                         data: snapshot.data.docs,
                         orderId: dataSnapShot.data.docs[index].id,

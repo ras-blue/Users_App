@@ -13,3 +13,6 @@ final itemsImagesList = [
 ];
 
 CartMethods cartMethods = CartMethods();
+String previousEarning = '';
+double countStarsRating = 0.0;
+String titleStarsRating = '';

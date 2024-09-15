@@ -1,16 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+// import 'package:users_app/VendorOrderScreens/vendor_order_card.dart';
 import 'package:users_app/global/global.dart';
 import 'package:users_app/ordersScreens/order_card.dart';
 
-class OrdersScreen extends StatefulWidget {
-  const OrdersScreen({super.key});
+class NotYetReceivedParcel extends StatefulWidget {
+  const NotYetReceivedParcel({super.key});
 
   @override
-  State<OrdersScreen> createState() => _OrdersScreenState();
+  State<NotYetReceivedParcel> createState() => _NotYetReceivedParcelState();
 }
 
-class _OrdersScreenState extends State<OrdersScreen> {
+class _NotYetReceivedParcelState extends State<NotYetReceivedParcel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +35,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ),
         ),
         title: Text(
-          'My Orders',
+          'Not Yet Received Parcels',
           style: TextStyle(
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -46,10 +47,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("users")
-            .doc(sharedPreferences!.getString("uid"))
             .collection("orders")
-            .where("status", isEqualTo: "normal")
+            .where("status", isEqualTo: "shifted")
+            .where('orderBy', isEqualTo: sharedPreferences!.getString('uid'))
             .orderBy("orderTime", descending: true)
             .snapshots(),
         builder: (c, AsyncSnapshot dataSnapShot) {

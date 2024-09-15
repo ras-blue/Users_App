@@ -1,22 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:users_app/NotYetReceivedParcelsScreen/not_yet_received_parcel.dart';
+import 'package:users_app/ShiftedParcelsScreen/shifted_parcels_screen.dart';
+import 'package:users_app/VendorOrderScreens/vendor_order_screen.dart';
+import 'package:users_app/earningsScreen/earnings_screen.dart';
 // import 'package:users_app/CustomersAuthScreens/customer_auth_screen.dart';
 import 'package:users_app/global/global.dart';
-import 'package:users_app/history/history.dart';
-import 'package:users_app/mainScreens/home_screen.dart';
-import 'package:users_app/ordersScreens/orders_screen.dart';
+import 'package:users_app/history/vendor_history.dart';
+// import 'package:users_app/mainScreens/home_screen.dart';
+import 'package:users_app/mainScreens/vendor_home_screen.dart';
+// import 'package:users_app/ordersScreens/orders_screen.dart';
 // import 'package:users_app/splashScreen/my_splash_screen.dart';
 import 'package:users_app/welcome_screens/welcome_register_screen.dart';
 
-class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key});
+class VendorDrawer extends StatefulWidget {
+  const VendorDrawer({super.key});
 
   @override
-  State<MyDrawer> createState() => _MyDrawerState();
+  State<VendorDrawer> createState() => _VendorDrawerState();
 }
 
-class _MyDrawerState extends State<MyDrawer> {
+class _VendorDrawerState extends State<VendorDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -83,7 +86,29 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => HomeScreen()));
+                        MaterialPageRoute(builder: (c) => VendorHomeScreen()));
+                  },
+                ),
+                Divider(
+                  height: 10,
+                  color: Colors.grey,
+                  thickness: 2,
+                ),
+                //Earnings
+                ListTile(
+                  leading: Icon(
+                    Icons.monetization_on,
+                    color: Colors.grey,
+                  ),
+                  title: Text(
+                    'Earnings',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => EarningsScreen()));
                   },
                 ),
                 Divider(
@@ -99,14 +124,14 @@ class _MyDrawerState extends State<MyDrawer> {
                     color: Colors.grey,
                   ),
                   title: Text(
-                    'My Orders',
+                    'New Orders',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
                   ),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => OrdersScreen()));
+                        MaterialPageRoute(builder: (c) => VendorOrderScreen()));
                   },
                 ),
                 Divider(
@@ -122,7 +147,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     color: Colors.grey,
                   ),
                   title: Text(
-                    'not yet received parcels',
+                    'Shifted Parcels',
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -131,7 +156,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (c) => NotYetReceivedParcel(),
+                        builder: (c) => ShiftedParcelsScreen(),
                       ),
                     );
                   },
@@ -158,30 +183,10 @@ class _MyDrawerState extends State<MyDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (c) => HistoryScreen(),
+                        builder: (c) => VendorHistory(),
                       ),
                     );
                   },
-                ),
-                Divider(
-                  height: 10,
-                  color: Colors.grey,
-                  thickness: 2,
-                ),
-
-                //search
-                ListTile(
-                  leading: Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
-                  title: Text(
-                    'search',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  onTap: () {},
                 ),
                 Divider(
                   height: 10,

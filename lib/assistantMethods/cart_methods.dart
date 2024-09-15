@@ -74,4 +74,35 @@ class CartMethods {
 
     return itemsQuantitiesList;
   }
+
+  seperateOrderItemIDs(productIDs) {
+    List<String>? userCartList = List<String>.from(productIDs);
+
+    List<String> itemsIDsList = [];
+    for (int i = 1; i < userCartList.length; i++) {
+      String item = userCartList[i].toString();
+      var lastCharacterPositionOfItemBeforeColon = item.lastIndexOf(':');
+
+      String getItemID =
+          item.substring(0, lastCharacterPositionOfItemBeforeColon);
+      itemsIDsList.add(getItemID);
+    }
+
+    return itemsIDsList;
+  }
+
+  seperateOrderItemsQuantities(productIDs) {
+    List<String>? userCartList = List<String>.from(productIDs);
+
+    List<String> itemsQuantitiesList = [];
+    for (int i = 1; i < userCartList.length; i++) {
+      String item = userCartList[i].toString();
+      var colonAndAfterCharacterList = item.split(':').toList();
+
+      var quantityNumber = int.parse(colonAndAfterCharacterList[1].toString());
+      itemsQuantitiesList.add(quantityNumber.toString());
+    }
+
+    return itemsQuantitiesList;
+  }
 }
